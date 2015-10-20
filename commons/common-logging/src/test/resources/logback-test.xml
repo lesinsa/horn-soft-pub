@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="CUSTOM" class="com.horn.common.logging.LogbackToJULBridge">
+        <property1>value1</property1>
+    </appender>
+
+    <logger name="com.horn.test.custom" level="info">
+        <appender-ref ref="CUSTOM"/>
+    </logger>
+</configuration>

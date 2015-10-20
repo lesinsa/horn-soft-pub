@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <!-- ****************************************** PRODUCTION PROFILE ****************************************** -->
+    <!-- ****************************************** DEVELOPMENT PROFILE ****************************************** -->
+    <!-- to activate profile set JAVA_OPTIONS=%JAVA_OPTIONS% -Dcom.horn.isTestServer=true -->
+
+    <!-- parameter ${PATH_LOG} MUST be defined in including logback.xml -->
+
+    <include resource="logback.common.xml"/>
+
+    <root level="info">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+    <logger name="com.horn" level="DEBUG">
+        <appender-ref ref="DEBUG_FILE"/>
+    </logger>
+
+    <logger name="org.hibernate" level="warn"/>
+
+    <logger name="liquibase" level="DEBUG">
+        <appender-ref ref="DEBUG_FILE"/>
+    </logger>
+
+    <!-- EclipseLink logging categories -->
+    <include resource="logback.eclipselink-file.xml"/>
+
+    <!-- log to STDOUT on developer server
+        set JAVA_OPTIONS=%JAVA_OPTIONS% -Dcom.horn.consoleLogging=true
+    in setDomainEnv.cmd-->
+    <if condition='isDefined("com.horn.consoleLogging") &amp;&amp; property("com.horn.consoleLogging").equalsIgnoreCase("true")'>
+        <then>
+            <logger name="com.horn" level="DEBUG">
+                <appender-ref ref="STDOUT"/>
+            </logger>
+
+            <!-- EclipseLink logging categories -->
+            <include resource="logback.eclipselink-stdout.xml"/>
+
+            <logger name="liquibase" level="DEBUG">
+                <appender-ref ref="STDOUT"/>
+            </logger>
+        </then>
+    </if>
+</included>

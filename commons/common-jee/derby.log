@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Oct 20 17:14:34 MSK 2015:
+ Производится загрузка Derby версии The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): экземпляр a816c00e-0150-859a-011a-000013da3328
+в каталоге базы данных C:\Users\lesinsa\AppData\Local\Temp\gfembed2558818877524566417tmp\lib\databases\ejbtimer sun.misc.Launcher$AppClassLoader@511d50c0 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_51-b16
+user.dir=C:\work\horn-soft-pub\commons\common-jee
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Запущен загрузчик классов базы данных - derby.database.classpath=''

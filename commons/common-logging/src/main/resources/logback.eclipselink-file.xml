@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <!-- EclipseLink logging categories -->
+    <if condition='isDefined("org.eclipse.persistence.logging.sql")'>
+        <then>
+            <logger name="org.eclipse.persistence.logging.sql" level="DEBUG">
+                <appender-ref ref="DEBUG_FILE"/>
+            </logger>
+        </then>
+    </if>
+
+    <if condition='isDefined("org.eclipse.persistence.logging.transaction")'>
+        <then>
+            <logger name="org.eclipse.persistence.logging.transaction" level="TRACE">
+                <appender-ref ref="DEBUG_FILE"/>
+            </logger>
+        </then>
+    </if>
+
+    <if condition='isDefined("org.eclipse.persistence.logging.connection")'>
+        <then>
+            <logger name="org.eclipse.persistence.logging.connection" level="TRACE">
+                <appender-ref ref="DEBUG_FILE"/>
+            </logger>
+        </then>
+    </if>
+</included>

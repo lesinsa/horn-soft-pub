@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <!-- ****************************************** PRODUCTION PROFILE ****************************************** -->
+
+    <!-- parameter ${PATH_LOG} MUST be defined in including logback.xml -->
+
+    <include resource="logback.common.xml"/>
+
+    <root level="WARN">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+    <logger name="com.horn" level="INFO"/>
+
+    <logger name="org.hibernate" level="ERROR"/>
+
+    <logger name="com.horn.common">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="liquibase">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+</included>
