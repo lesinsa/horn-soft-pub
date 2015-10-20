@@ -1,0 +1,36 @@
+<http-log-config xmlns="http://xmlns.prbb.ru/schema/http-logger-1.0.xsd">
+
+    <reader-datasource>java:/jdbc/test</reader-datasource>
+
+    <appender name="DB" class="com.horn.common.logging.appenders.JdbcAppender">
+        <property name="data-source">java:/jdbc/test</property>
+    </appender>
+
+    <appender name="NOP" class="com.horn.common.logging.appenders.NopLogAppender">
+    </appender>
+
+    <logger path="/path1">
+        <appender-ref ref="DB"/>
+    </logger>
+
+    <logger path="/path2">
+        <appender-ref ref="DB"/>
+    </logger>
+
+    <logger path="/path3" method="POST" consumes="application/json">
+        <response-filters>
+            <produces mime-type="application/json" disabled="false" disable-response-body="false"/>
+            <produces mime-type="text/*" disabled="false" disable-response-body="true"/>
+            <produces mime-type="image/*" disabled="true" disable-response-body="true" disable-request-body="false"/>
+            <produces mime-type="*/*" disabled="true" disable-response-body="true" disable-request-body="false"/>
+        </response-filters>
+
+        <appender-ref ref="DB"/>
+        <appender-ref ref="NOP"/>
+    </logger>
+
+    <logger path="/path3" method="POST" consumes="application/x-www-form-urlencoded">
+        <appender-ref ref="DB"/>
+    </logger>
+
+</http-log-config>
