@@ -3,6 +3,12 @@
     <!-- common properties -->
     <!-- to override property value define property BEFORE include directive -->
 
+    <if condition='!isDefined("APP_BASE_PACKAGE")'>
+        <then>
+            <property name="APP_BASE_PACKAGE" value="com.horn"/>
+        </then>
+    </if>
+
     <if condition='!isDefined("MAX_FILE_SIZE")'>
         <then>
             <property name="MAX_FILE_SIZE" value="5MB"/>

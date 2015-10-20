@@ -13,7 +13,7 @@
         <appender-ref ref="ERROR_FILE"/>
     </root>
 
-    <logger name="com.horn" level="DEBUG">
+    <logger name="${APP_BASE_PACKAGE}" level="DEBUG">
         <appender-ref ref="DEBUG_FILE"/>
     </logger>
 
@@ -31,7 +31,11 @@
     in setDomainEnv.cmd-->
     <if condition='isDefined("com.horn.consoleLogging") &amp;&amp; property("com.horn.consoleLogging").equalsIgnoreCase("true")'>
         <then>
-            <logger name="com.horn" level="DEBUG">
+            <logger name="com.horn.common" level="DEBUG" additivity="false">
+                <appender-ref ref="STDOUT"/>
+            </logger>
+
+            <logger name="${APP_BASE_PACKAGE}" level="DEBUG">
                 <appender-ref ref="STDOUT"/>
             </logger>
 

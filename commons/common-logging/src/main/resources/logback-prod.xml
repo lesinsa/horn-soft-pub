@@ -11,7 +11,7 @@
         <appender-ref ref="ERROR_FILE"/>
     </root>
 
-    <logger name="com.horn" level="INFO"/>
+    <logger name="${APP_BASE_PACKAGE}" level="INFO"/>
 
     <logger name="org.hibernate" level="ERROR"/>
 
