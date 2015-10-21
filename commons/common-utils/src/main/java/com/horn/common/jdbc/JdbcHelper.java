@@ -102,7 +102,7 @@ public final class JdbcHelper {
         if (value != null) {
             stmt.setBytes(parameterIndex, value);
         } else {
-            stmt.setNull(parameterIndex, Types.BLOB);
+            stmt.setNull(parameterIndex, Types.VARBINARY);
         }
     }
 
