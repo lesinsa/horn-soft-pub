@@ -93,14 +93,14 @@
         </dependency>
 
         <dependency>
-            <groupId>ru.prbb.commons</groupId>
+            <groupId>com.horn.commons</groupId>
             <artifactId>db-versioning</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>ru.prbb.commons</groupId>
+            <groupId>com.horn.commons</groupId>
             <artifactId>common-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
