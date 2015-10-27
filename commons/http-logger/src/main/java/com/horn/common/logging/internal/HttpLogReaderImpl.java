@@ -1,9 +1,9 @@
 package com.horn.common.logging.internal;
 
-import com.horn.common.logging.HttpLogReader;
-import com.horn.common.logging.domain.LogHttpRequest;
 import com.horn.common.jdbc.JdbcHelper;
+import com.horn.common.logging.HttpLogReader;
 import com.horn.common.logging.domain.LogHttpData;
+import com.horn.common.logging.domain.LogHttpRequest;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -34,13 +34,14 @@ public class HttpLogReaderImpl implements HttpLogReader {
 
         return JdbcHelper.executeSql(dataSource, SELECT_REQUEST_SQL, stmt -> {
             List<LogHttpRequest> result = new ArrayList<>();
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                LogHttpRequest request = mapHttpRequest(rs);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LogHttpRequest request = mapHttpRequest(rs);
 
-                result.add(request);
+                    result.add(request);
+                }
+                return result;
             }
-            return result;
         });
     }
 
@@ -48,12 +49,13 @@ public class HttpLogReaderImpl implements HttpLogReader {
     public List<LogHttpData> getAllHttpDatas() {
         return JdbcHelper.executeSql(dataSource, SELECT_DATA_SQL, stmt -> {
             List<LogHttpData> result = new ArrayList<>();
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                LogHttpData data = mapLogHttpData(rs);
-                result.add(data);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LogHttpData data = mapLogHttpData(rs);
+                    result.add(data);
+                }
+                return result;
             }
-            return result;
         });
     }
 

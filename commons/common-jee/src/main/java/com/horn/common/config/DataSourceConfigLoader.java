@@ -37,18 +37,17 @@ public class DataSourceConfigLoader implements ConfigLoader {
             return JdbcHelper.executeSql(dataSource, selectSql,
                     stmt -> {
                         stmt.setString(1, ns);
-                        ResultSet rs = stmt.executeQuery();
-
-                        Properties properties = new Properties();
-                        while (rs.next()) {
-                            String key = rs.getString(1);
-                            String value = rs.getString(2);
-                            if (value != null) {
-                                properties.setProperty(key, value);
+                        try (ResultSet rs = stmt.executeQuery()) {
+                            Properties properties = new Properties();
+                            while (rs.next()) {
+                                String key = rs.getString(1);
+                                String value = rs.getString(2);
+                                if (value != null) {
+                                    properties.setProperty(key, value);
+                                }
                             }
+                            return properties;
                         }
-
-                        return properties;
                     });
         } catch (NamingException e) {
             throw new ConfigException("Data source '" + urlInfo.getResourceName() + "' is not found", e);
