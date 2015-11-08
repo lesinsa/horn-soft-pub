@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>common-master</artifactId>
         <groupId>com.horn.commons</groupId>
@@ -102,4 +103,63 @@
             </testResource>
         </testResources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>it-container@glassfish-embedded</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <arquillian.container>glassfish-embedded</arquillian.container>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.glassfish.main.extras</groupId>
+                    <artifactId>glassfish-embedded-all</artifactId>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.arquillian.container</groupId>
+                    <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+                    <version>1.0.0.CR4</version>
+                    <scope>test</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.container</groupId>
+                            <artifactId>arquillian-container-spi</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.container</groupId>
+                            <artifactId>arquillian-container-test-spi</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.protocol</groupId>
+                            <artifactId>arquillian-protocol-servlet</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.core</groupId>
+                            <artifactId>arquillian-core-spi</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.core</groupId>
+                            <artifactId>arquillian-core-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.test</groupId>
+                            <artifactId>arquillian-test-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>org.jboss.arquillian.test</groupId>
+                            <artifactId>arquillian-test-spi</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

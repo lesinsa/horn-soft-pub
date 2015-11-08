@@ -32,14 +32,24 @@ public class CacheIT {
                 .withTransitivity()
                 .asFile();
 
+        File[] libs1 = Maven.configureResolver()
+                .workOffline()
+                .loadPomFromFile("pom.xml")
+                .importCompileAndRuntimeDependencies()
+                .resolve()
+                .withTransitivity()
+                .asFile();
+
         return ShrinkWrap.create(WebArchive.class, "commonjee.war")
                 .addClass(TestCacheConfig.class)
                 .addClass(TestCachedClass.class)
                 .addPackage("com.horn.common.cache")
                 .addPackage("com.horn.common.cdi")
+                .addPackage("com.horn.common.jaxb")
                 .addAsWebInfResource(new File("src/test/resources/cache-beans.xml"), "beans.xml")
                 .addAsResource(new File("src/main/resources/META-INF/services"), "META-INF/services")
                 .addAsLibraries(libs)
+                .addAsLibraries(libs1)
                 ;
     }
 

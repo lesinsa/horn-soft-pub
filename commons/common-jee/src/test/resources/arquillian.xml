@@ -12,6 +12,15 @@
         </configuration>
     </container>
 
+    <container qualifier="wildfly-embedded-8.2.1">
+        <configuration>
+            <property name="jbossHome">${env.JBOSS_HOME}</property>
+            <property name="modulePath">${env.JBOSS_HOME}\modules</property>
+            <!--<property name="managementPort">19956</property>-->
+            <property name="managementPort">9990</property>
+        </configuration>
+    </container>
+
     <container qualifier="wls-remote-12.1">
         <configuration>
             <property name="adminUrl">t3://eis-dev.life.corp:7003</property>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.horn</groupId>
@@ -154,7 +155,12 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.36</version>
-                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>9.4-1202-jdbc42</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -339,26 +345,54 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <deploy.wls.url>t3://eis-dev.life.corp:7003</deploy.wls.url>
-                <deploy.wls.user>weblogic</deploy.wls.user>
-                <deploy.wls.password>Qwerty123</deploy.wls.password>
-                <deploy.wls.target>oiri-dev</deploy.wls.target>
-
-                <!-- параметры подключения для liquibase и других плагинов -->
-                <db.connection.username>appserv</db.connection.username>
-                <db.connection.password>a170028</db.connection.password>
-            </properties>
-        </profile>
-
-
-        <!-- Профили для интеграционного тестирования. Определяют используемый JEE-контейнер -->
+        <!-- Профиль для интеграционного тестирования. Определяют используемый JEE-контейнер -->
         <profile>
             <id>it</id>
 
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>run-integration-tests</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                </goals>
+                                <phase>integration-test</phase>
+                            </execution>
+                            <execution>
+                                <id>verify-integration-tests</id>
+                                <goals>
+                                    <goal>verify</goal>
+                                </goals>
+                                <phase>verify</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <arquillian.launch>${arquillian.container}</arquillian.launch>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>it-container@glassfish-embedded</id>
+
+            <properties>
+                <arquillian.container>glassfish-embedded</arquillian.container>
+            </properties>
+
             <dependencies>
+                <dependency>
+                    <groupId>org.glassfish.main.extras</groupId>
+                    <artifactId>glassfish-embedded-all</artifactId>
+                </dependency>
+
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
                     <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
@@ -396,94 +430,62 @@
                     </exclusions>
                 </dependency>
             </dependencies>
+        </profile>
+
+        <profile>
+            <id>it-container@wildfly-embedded-8.2.1</id>
+
+            <properties>
+                <arquillian.container>wildfly-embedded-8.2.1</arquillian.container>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-arquillian-container-embedded</artifactId>
+                    <version>8.2.1.Final</version>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.wildfly</groupId>
+                    <artifactId>wildfly-embedded</artifactId>
+                    <version>8.2.1.Final</version>
+                    <scope>test</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.logging</groupId>
+                    <artifactId>jboss-logging</artifactId>
+                    <version>3.1.4.GA</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
 
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>it-tests-GF4</id>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                </goals>
-                                <phase>integration-test</phase>
-                            </execution>
-                            <execution>
-                                <id>it-verify-GF4</id>
-                                <goals>
-                                    <goal>verify</goal>
-                                </goals>
-                                <phase>verify</phase>
-                            </execution>
-                        </executions>
+                        <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <systemPropertyVariables>
-                                <arquillian.launch>glassfish-embedded</arquillian.launch>
-                            </systemPropertyVariables>
+                            <systemProperties>
+                                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                            </systemProperties>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-
-        <!--TODO адаптировать тесты под контейнер WLS-12.1-->
-        <!--
-                <profile>
-                    &lt;!&ndash; В качестве контейнера используется центральный dev-сервер&ndash;&gt;
-                    <id>it-WLS</id>
-
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.jboss.arquillian.container</groupId>
-                            <artifactId>arquillian-wls-remote-12.1</artifactId>
-                            <version>1.0.0.Alpha3</version>
-                            <scope>test</scope>
-                            <exclusions>
-                                <exclusion>
-                                    <groupId>org.jboss.arquillian.container</groupId>
-                                    <artifactId>arquillian-container-spi</artifactId>
-                                </exclusion>
-                                <exclusion>
-                                    <groupId>org.jboss.arquillian.container</groupId>
-                                    <artifactId>arquillian-container-test-spi</artifactId>
-                                </exclusion>
-                            </exclusions>
-                        </dependency>
-                    </dependencies>
-
-                    <build>
-                        <plugins>
-                            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-failsafe-plugin</artifactId>
-                                <executions>
-                                    <execution>
-                                        <id>it-tests-WLS</id>
-                                        <goals>
-                                            <goal>integration-test</goal>
-                                        </goals>
-                                        <phase>integration-test</phase>
-                                    </execution>
-                                    <execution>
-                                        <id>it-verify-WLS</id>
-                                        <goals>
-                                            <goal>verify</goal>
-                                        </goals>
-                                        <phase>verify</phase>
-                                    </execution>
-                                </executions>
-                                <configuration>
-                                    <systemPropertyVariables>
-                                        <arquillian.launch>wls-remote-12.1</arquillian.launch>
-                                    </systemPropertyVariables>
-                                </configuration>
-                            </plugin>
-                        </plugins>
-                    </build>
-                </profile>
-        -->
     </profiles>
 
 </project>
