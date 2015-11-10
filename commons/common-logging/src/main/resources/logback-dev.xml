@@ -31,7 +31,7 @@
     in setDomainEnv.cmd-->
     <if condition='isDefined("com.horn.consoleLogging") &amp;&amp; property("com.horn.consoleLogging").equalsIgnoreCase("true")'>
         <then>
-            <logger name="com.horn.common" level="DEBUG" additivity="false">
+            <logger name="com.horn.common" level="DEBUG">
                 <appender-ref ref="STDOUT"/>
             </logger>
 
