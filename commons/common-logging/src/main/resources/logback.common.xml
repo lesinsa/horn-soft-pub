@@ -72,21 +72,6 @@
         </filter>
     </appender>
 
-    <appender name="DEBUG_FILE"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <prudent>true</prudent>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${PATH_LOG}/debug-${FILE_PATTERN}</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>${MAX_HISTORY}</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${ENCODER_PATTERN}</pattern>
-        </encoder>
-    </appender>
-
     <appender name="SERVER_LOG" class="com.horn.common.logging.LogbackToJULBridge"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

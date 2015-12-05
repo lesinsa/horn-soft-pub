@@ -8,6 +8,21 @@
 
     <include resource="logback.common.xml"/>
 
+    <appender name="DEBUG_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${PATH_LOG}/debug-${FILE_PATTERN}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
     <root level="info">
         <appender-ref ref="FILE"/>
         <appender-ref ref="ERROR_FILE"/>
@@ -41,6 +56,10 @@
                 <appender-ref ref="${CONSOLE_LOGGER}"/>
             </logger>
 
+            <logger name="com.horn.app" level="DEBUG">
+                <appender-ref ref="${CONSOLE_LOGGER}"/>
+            </logger>
+
             <logger name="${APP_BASE_PACKAGE}" level="DEBUG">
                 <appender-ref ref="${CONSOLE_LOGGER}"/>
             </logger>
@@ -52,5 +71,17 @@
                 <appender-ref ref="${CONSOLE_LOGGER}"/>
             </logger>
         </then>
+        <else>
+            <logger name="com.horn.app" level="DEBUG">
+                <appender-ref ref="SERVER_LOG"/>
+            </logger>
+        </else>
     </if>
+
+    <logger name="com.horn.app" level="DEBUG">
+        <appender-ref ref="DEBUG_FILE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </logger>
+
 </included>

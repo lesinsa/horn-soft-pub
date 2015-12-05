@@ -15,11 +15,13 @@
 
     <logger name="org.hibernate" level="ERROR"/>
 
-    <logger name="com.horn.common">
-        <appender-ref ref="STDOUT"/>
+    <logger name="com.horn.app" level="DEBUG">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="SERVER_LOG"/>
     </logger>
 
-    <logger name="liquibase">
-        <appender-ref ref="STDOUT"/>
+    <logger name="liquibase" level="INFO">
+        <appender-ref ref="SERVER_LOG"/>
     </logger>
 </included>

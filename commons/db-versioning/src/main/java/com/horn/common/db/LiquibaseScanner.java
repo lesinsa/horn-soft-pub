@@ -1,5 +1,6 @@
 package com.horn.common.db;
 
+import com.horn.common.logging.App;
 import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -9,7 +10,6 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.ResourceAccessor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -34,7 +34,7 @@ import java.util.*;
 @TransactionManagement(TransactionManagementType.BEAN)
 public class LiquibaseScanner {
     public static final String LIQUIBASE_SCAN_PROPERTY = "liquibase.scan";
-    private static final Logger LOG = LoggerFactory.getLogger(LiquibaseScanner.class);
+    private static final Logger LOG = App.LOG;
 
     @PostConstruct
     public void init() {

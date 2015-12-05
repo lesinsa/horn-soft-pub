@@ -1,7 +1,7 @@
 package com.horn.common.cdi;
 
+import com.horn.common.logging.App;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class BeanPostProcessorExtension implements Extension {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BeanPostProcessorExtension.class);
+    private static final Logger LOG = App.LOG;
 
     private List<BeanDefinition> beanDefinitionList = new ArrayList<>();
 
@@ -28,7 +28,8 @@ public class BeanPostProcessorExtension implements Extension {
         for (Annotation annotation : annotations) {
             BeanProcessorBinding binding = annotation.annotationType().getAnnotation(BeanProcessorBinding.class);
             if (binding != null) {
-                LOG.info("Found bean post-processor binding: {}", javaClass.getName());
+                LOG.debug("Found bean post-processor binding: {}; bean post-processor: {}", javaClass.getName(),
+                        binding.provider().getName());
                 beanDefinitionList.add(new BeanDefinition(annotatedType, binding, annotation));
                 event.veto();
             }
@@ -41,11 +42,12 @@ public class BeanPostProcessorExtension implements Extension {
         for (BeanDefinition beanDefinition : beanDefinitionList) {
             AnnotatedType<?> annotatedType = beanDefinition.getAnnotatedType();
             String className = annotatedType.getJavaClass().getName();
+            Class<? extends BeanPostProcessor> provider = beanDefinition.getBinding().provider();
             LOG.info("Add bean definition for class: {}", className);
             try {
                 InjectionTarget<?> injectionTarget = bm.createInjectionTarget(annotatedType);
                 @SuppressWarnings("unchecked")
-                Bean<?> bean = new BeanImpl(annotatedType, injectionTarget, beanDefinition.getBinding().provider(),
+                Bean<?> bean = new BeanImpl(annotatedType, injectionTarget, provider,
                         beanDefinition.getBindedAnnotation(), bm);
                 event.addBean(bean);
             } catch (BeanDefinitionException e) {

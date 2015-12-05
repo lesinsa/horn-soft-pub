@@ -2,8 +2,8 @@ package com.horn.common.jaxb;
 
 import com.horn.common.cdi.ProgrammaticCdiBeanLookup;
 import com.horn.common.exception.StandardException;
+import com.horn.common.logging.App;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author lesinsa on 20.05.2015.
  */
 public class SerializerExtension implements Extension {
-    private static final Logger LOG = LoggerFactory.getLogger(SerializerExtension.class);
+    private static final Logger LOG = App.LOG;
 
     private List<Bean<?>> repositoriesList;
 

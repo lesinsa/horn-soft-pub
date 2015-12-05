@@ -1,5 +1,6 @@
 package com.horn.common.db;
 
+import com.horn.common.logging.App;
 import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -9,7 +10,6 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.ResourceAccessor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -24,7 +24,7 @@ import java.sql.SQLException;
 public abstract class LiquibaseRunner {
 
     public static final String DEFAULT_MASTERLOG_LOCATION = "META-INF/liquibase/masterChangeLog.xml";
-    private static final Logger LOGGER = LoggerFactory.getLogger(LiquibaseRunner.class);
+    private static final Logger LOGGER = App.LOG;
 
     @PostConstruct
     public void init() {
