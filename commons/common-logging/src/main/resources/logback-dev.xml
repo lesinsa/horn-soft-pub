@@ -26,24 +26,30 @@
     <!-- EclipseLink logging categories -->
     <include resource="logback.eclipselink-file.xml"/>
 
+    <if condition='!isDefined("CONSOLE_LOGGER")'>
+        <then>
+            <property name="CONSOLE_LOGGER" value="STDOUT"/>
+        </then>
+    </if>
+
     <!-- log to STDOUT on developer server
         set JAVA_OPTIONS=%JAVA_OPTIONS% -Dcom.horn.consoleLogging=true
     in setDomainEnv.cmd-->
     <if condition='isDefined("com.horn.consoleLogging") &amp;&amp; property("com.horn.consoleLogging").equalsIgnoreCase("true")'>
         <then>
             <logger name="com.horn.common" level="DEBUG">
-                <appender-ref ref="STDOUT"/>
+                <appender-ref ref="${CONSOLE_LOGGER}"/>
             </logger>
 
             <logger name="${APP_BASE_PACKAGE}" level="DEBUG">
-                <appender-ref ref="STDOUT"/>
+                <appender-ref ref="${CONSOLE_LOGGER}"/>
             </logger>
 
             <!-- EclipseLink logging categories -->
             <include resource="logback.eclipselink-stdout.xml"/>
 
             <logger name="liquibase" level="DEBUG">
-                <appender-ref ref="STDOUT"/>
+                <appender-ref ref="${CONSOLE_LOGGER}"/>
             </logger>
         </then>
     </if>
