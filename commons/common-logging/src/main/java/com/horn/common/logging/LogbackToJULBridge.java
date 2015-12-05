@@ -16,7 +16,9 @@ public class LogbackToJULBridge extends AppenderBase<ILoggingEvent> {
         Logger logger = Logger.getLogger(event.getLoggerName());
         Level level = event.getLevel();
         java.util.logging.Level julLevel = takeLevel(level);
-        logger.log(julLevel, event.getFormattedMessage());
+        if (logger.isLoggable(julLevel)) {
+            logger.log(julLevel, event.getFormattedMessage());
+        }
     }
 
     private java.util.logging.Level takeLevel(Level level) {
