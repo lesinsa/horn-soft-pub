@@ -51,10 +51,12 @@ public class SerializerExtension implements Extension {
 
                     Method[] methods = clazz.getDeclaredMethods();
                     for (Method method : methods) {
-                        DataFromMethod dataFromMethod = new DataFromMethod(bean, reference, method).invoke();
-                        ContextDef contextDef = dataFromMethod.getContextDef();
-                        Class[] classes = dataFromMethod.getClasses();
-                        holderBean.addContext(contextDef.name(), contextDef.type(), classes);
+                        if (method.getAnnotation(ContextDef.class) != null) {
+                            DataFromMethod dataFromMethod = new DataFromMethod(bean, reference, method).invoke();
+                            ContextDef contextDef = dataFromMethod.getContextDef();
+                            Class[] classes = dataFromMethod.getClasses();
+                            holderBean.addContext(contextDef.name(), contextDef.type(), classes);
+                        }
                     }
                 } catch (Exception e) {
                     LOG.error("", e);
@@ -106,7 +108,11 @@ public class SerializerExtension implements Extension {
                 classes = (Class[]) result;
             } else if (Collection.class.isAssignableFrom(returnType)) {
                 Collection collection = (Collection) result;
-                classes = (Class[]) collection.toArray();
+                Object[] returnValue = collection.toArray();
+                this.classes = new Class[collection.size()];
+                for (int i = 0; i < this.classes.length; i++) {
+                    this.classes[i] = (Class) returnValue[i];
+                }
             } else if (result.getClass() == Class.class) {
                 classes = new Class[]{(Class) result};
             } else {
