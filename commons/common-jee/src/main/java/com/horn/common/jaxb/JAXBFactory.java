@@ -52,6 +52,25 @@ public class JAXBFactory {
         }
     }
 
+    public String serializeFragment(String contextName, Object obj) {
+        try {
+            Object context = findContext(contextName);
+            if (context instanceof JAXBContext) {
+                JAXBContext jaxbContext = (JAXBContext) context;
+                Marshaller marshaller = jaxbContext.createMarshaller();
+                marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+                StringWriter writer = new StringWriter();
+                marshaller.marshal(obj, writer);
+                return writer.toString();
+            } else {
+                throw new IllegalStateException("Not implemented yet");
+            }
+
+        } catch (JAXBException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private Object findContext(String name) {
         Object result = holderBean.get(name);
         if (result == null) {
