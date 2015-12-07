@@ -2,6 +2,7 @@ package com.horn.common.logging;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.ThrowableProxy;
 import ch.qos.logback.core.AppenderBase;
 
 import java.util.logging.Logger;
@@ -17,7 +18,12 @@ public class LogbackToJULBridge extends AppenderBase<ILoggingEvent> {
         Level level = event.getLevel();
         java.util.logging.Level julLevel = takeLevel(level);
         if (logger.isLoggable(julLevel)) {
-            logger.log(julLevel, event.getFormattedMessage());
+            if (event.getThrowableProxy() != null && event.getThrowableProxy() instanceof ThrowableProxy) {
+                ThrowableProxy throwableProxy = (ThrowableProxy) event.getThrowableProxy();
+                logger.log(julLevel, event.getFormattedMessage(), throwableProxy.getThrowable());
+            } else {
+                logger.log(julLevel, event.getFormattedMessage());
+            }
         }
     }
 
