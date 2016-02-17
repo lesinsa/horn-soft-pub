@@ -22,6 +22,7 @@
         <module>db-versioning</module>
         <module>common-rest</module>
         <module>jee-parent</module>
+        <module>http-logger</module>
     </modules>
 
     <scm>
