@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC
+        "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN"
+        "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+
+    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false"
+                          datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource"
+                          max-pool-size="4"
+                          name="mysqlMobileService" pool-resize-quantity="1"
+                          res-type="javax.sql.ConnectionPoolDataSource"
+                          steady-pool-size="1">
+        <property name="User" value="appserv"/>
+        <property name="Password" value="a170028"/>
+        <property name="URL" value="jdbc:mysql://eis-dev.life.corp:3306/mobile_service?characterEncoding=UTF-8"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    </jdbc-connection-pool>
+    <jdbc-resource enabled="true" jndi-name="jdbc/mobile_service" object-type="user" pool-name="mysqlMobileService"/>
+
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <!-- common properties -->
+    <!-- to override property value define property BEFORE include directive -->
+
+    <if condition='!isDefined("MAX_FILE_SIZE")'>
+        <then>
+            <property name="MAX_FILE_SIZE" value="5MB"/>
+        </then>
+    </if>
+
+    <if condition='!isDefined("ENCODER_PATTERN")'>
+        <then>
+            <property name="ENCODER_PATTERN"
+                      value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{10} [%file - %line] {%replace(%thread){' for.*', ''}} - %msg%n"/>
+        </then>
+    </if>
+
+    <if condition='!isDefined("FILE_PATTERN")'>
+        <then>
+            <property name="FILE_PATTERN" value="%d{yyyy-MM-dd}_%i.log"/>
+        </then>
+    </if>
+
+    <if condition='!isDefined("MAX_HISTORY")'>
+        <then>
+            <property name="MAX_HISTORY" value="31"/>
+        </then>
+    </if>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${PATH_LOG}/app-${FILE_PATTERN}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="ERROR_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <!--<file>${PATH_LOG}/error.log</file>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${PATH_LOG}/error-${FILE_PATTERN}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <appender name="DEBUG_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${PATH_LOG}/debug-${FILE_PATTERN}</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SERVER_LOG" class="ru.prbb.common.logging.LogbackToJULBridge"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+</included>

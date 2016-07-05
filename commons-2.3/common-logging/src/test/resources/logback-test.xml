@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="CUSTOM" class="ru.prbb.common.logging.LogbackToJULBridge">
+        <property1>value1</property1>
+    </appender>
+
+    <logger name="ru.prbb.test.custom" level="info">
+        <appender-ref ref="CUSTOM"/>
+    </logger>
+</configuration>
