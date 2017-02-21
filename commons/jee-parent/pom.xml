@@ -34,11 +34,11 @@
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
-            <url>http://eis-dev.life.corp/nexus/content/repositories/releases/</url>
+            <url>http://srv-recs-dev01:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
-            <url>http://eis-dev.life.corp/nexus/content/repositories/snapshots/</url>
+            <url>http://srv-recs-dev01:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
